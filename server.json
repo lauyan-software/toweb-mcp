@@ -3,13 +3,13 @@
   "name": "com.lauyan/toweb",
   "title": "TOWeb",
   "description": "Build, edit and publish websites with TOWeb, the desktop website builder for Mac and Windows.",
-  "version": "15.0.12",
+  "version": "15.0.13",
   "websiteUrl": "https://www.lauyan.com/en/ai-assistant/",
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/lauyan-software/toweb-mcp/releases/download/v15.0.12/toweb-mcp-15.0.12.mcpb",
-      "fileSha256": "025f11ccc90a2cde29ce42b0880b06b50f9787e1a5a70612e0a828860f12fc26",
+      "identifier": "https://github.com/lauyan-software/toweb-mcp/releases/download/v15.0.13/toweb-mcp-15.0.13.mcpb",
+      "fileSha256": "b4d865bc0811f24bab1ead3a6444393b1fafd9af84682fc72ab89c3a6e5c28b3",
       "transport": {
         "type": "stdio"
       }

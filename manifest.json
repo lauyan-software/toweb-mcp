@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "toweb",
   "display_name": "TOWeb",
-  "version": "15.0.12",
+  "version": "15.0.13",
   "description": "Build, edit and publish your websites with TOWeb, the desktop website builder, from Claude.",
   "long_description": "TOWeb is a desktop website builder for Mac and Windows: pages, blog, online shop, bookings, documentation and multilingual sites, published to your own hosting by FTP or SFTP. This extension connects Claude to the TOWeb application installed on your computer. Claude can create a complete site, write and lay out pages, add products and posts, translate, check and publish, while you watch the changes live in TOWeb and can undo any of them.\n\n**Requirements**: TOWeb 15 installed on this computer (https://www.lauyan.com). Full AI piloting is included in the Studio edition; other editions can try it on sites created by the assistant. Your sites stay on your computer.",
   "author": {

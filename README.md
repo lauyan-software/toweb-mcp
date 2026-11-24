@@ -22,6 +22,8 @@ If TOWeb is installed in a non-standard folder, set **TOWeb location** in the ex
 
 This package contains no TOWeb code. Its small launcher (`server/index.js`) finds the TOWeb application installed on your computer and starts the MCP server built into it (stdio). Your sites stay on your computer.
 
+Without TOWeb installed, the launcher still starts: it lists the tools of the published version (`server/tools.json`, generated from TOWeb's own MCP server), and every tool call explains how to install TOWeb and turn on AI access.
+
 ## Support
 
 <https://www.lauyan.com/support/> · Documentation: <https://www.lauyan.com/en/documentation/>

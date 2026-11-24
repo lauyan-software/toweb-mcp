@@ -48,6 +48,6 @@ TOWeb is a desktop website builder. Its MCP server is built into the TOWeb 15 ap
 
 ## Troubleshooting
 
-- **"TOWeb V15 was not found on this computer"**: TOWeb 15 is not installed, or is in another folder. Install it, or set `TOWEB_APP_PATH` as shown above.
+- **Every tool call answers "TOWeb 15 is not installed on this computer"** (the server starts and lists its tools, but TOWeb was not found): install TOWeb 15, or, if it is installed in another folder, set `TOWEB_APP_PATH` as shown above, then restart the MCP server.
 - **"TOWeb is not available to AI assistants on this computer"**: turn on **Settings › AI › Allow AI assistants** in TOWeb, then restart the MCP server.
 - **"TOWeb is installing an update"**: wait for TOWeb to restart after its update, then restart the MCP server.

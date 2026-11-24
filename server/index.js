@@ -57,23 +57,78 @@ function candidats() {
 
 const trouve = candidats().map(depuis).find(Boolean);
 if (!trouve) {
-  process.stderr.write(
-    `${NOM} was not found on this computer. Install TOWeb 15 from https://www.lauyan.com, open it once, `
-    + 'then restart Claude. If TOWeb is installed in another folder, set its location in this extension\'s settings.\n',
-  );
-  process.exit(1);
+  process.stderr.write(`${NOM} was not found on this computer: answering with the tool list only.\n`);
+  repli();
+} else {
+  lancer(trouve);
 }
 
-const enfant = spawn(trouve.bin, [path.join(trouve.res, 'app.asar', 'dist', 'mcp', 'lanceur.cjs')], {
-  env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
-  stdio: 'inherit',
-  windowsHide: true,
-});
-enfant.on('error', (err) => {
-  process.stderr.write(`Could not start ${NOM}: ${err.message}\n`);
-  process.exit(1);
-});
-enfant.on('exit', (code, signal) => process.exit(code ?? (signal ? 1 : 0)));
-for (const s of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
-  process.on(s, () => { try { enfant.kill(s); } catch { /* already gone */ } });
+/**
+ * Without TOWeb installed (a fresh computer, or a directory's automated check), the
+ * launcher still answers as an MCP server: `initialize`, and `tools/list` with the
+ * real tool list of the published version (tools.json, generated from TOWeb's own
+ * MCP server). Every tool call returns an error that says how to install TOWeb.
+ * No tool pretends to work.
+ */
+function repli() {
+  const MESSAGE = 'TOWeb 15 is not installed on this computer. Download it from https://www.lauyan.com, '
+    + 'then in TOWeb turn on Settings > AI > Allow AI assistants, and restart your AI assistant. '
+    + 'If TOWeb is installed in another folder, set its location in the TOWEB_APP_PATH setting.';
+  let liste = { tools: [], instructions: '' };
+  try { liste = JSON.parse(fs.readFileSync(path.join(__dirname, 'tools.json'), 'utf8')); } catch { /* empty list */ }
+  let version = '0.0.0';
+  try { version = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8')).version || version; } catch { /* unknown */ }
+  const VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
+  const envoyer = (m) => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', ...m }) + '\n');
+  const traiter = (m) => {
+    if (!m || typeof m !== 'object' || m.id === undefined || m.id === null) return; // notifications
+    switch (m.method) {
+      case 'initialize': {
+        const demandee = m.params && m.params.protocolVersion;
+        return envoyer({ id: m.id, result: {
+          protocolVersion: VERSIONS.includes(demandee) ? demandee : VERSIONS[1],
+          capabilities: { tools: { listChanged: false } },
+          serverInfo: { name: 'toweb', version },
+          instructions: MESSAGE,
+        } });
+      }
+      case 'ping': return envoyer({ id: m.id, result: {} });
+      case 'tools/list': return envoyer({ id: m.id, result: { tools: liste.tools } });
+      case 'tools/call': return envoyer({ id: m.id, result: { content: [{ type: 'text', text: MESSAGE }], isError: true } });
+      case 'resources/list': return envoyer({ id: m.id, result: { resources: [] } });
+      case 'prompts/list': return envoyer({ id: m.id, result: { prompts: [] } });
+      default: return envoyer({ id: m.id, error: { code: -32601, message: `Method not found: ${m.method}` } });
+    }
+  };
+  let tampon = '';
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', (d) => {
+    tampon += d;
+    let i;
+    while ((i = tampon.indexOf('\n')) >= 0) {
+      const ligne = tampon.slice(0, i).trim(); tampon = tampon.slice(i + 1);
+      if (!ligne) continue;
+      let m;
+      try { m = JSON.parse(ligne); } catch { envoyer({ id: null, error: { code: -32700, message: 'Parse error' } }); continue; }
+      (Array.isArray(m) ? m : [m]).forEach(traiter);
+    }
+  });
+  process.stdin.on('end', () => process.exit(0));
+}
+
+/** Hands over to the MCP server built into the installed TOWeb (stdio inherited). */
+function lancer(trouve) {
+  const enfant = spawn(trouve.bin, [path.join(trouve.res, 'app.asar', 'dist', 'mcp', 'lanceur.cjs')], {
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+    stdio: 'inherit',
+    windowsHide: true,
+  });
+  enfant.on('error', (err) => {
+    process.stderr.write(`Could not start ${NOM}: ${err.message}\n`);
+    process.exit(1);
+  });
+  enfant.on('exit', (code, signal) => process.exit(code ?? (signal ? 1 : 0)));
+  for (const s of ['SIGINT', 'SIGTERM', 'SIGHUP']) {
+    process.on(s, () => { try { enfant.kill(s); } catch { /* already gone */ } });
+  }
 }
