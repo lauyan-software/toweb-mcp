@@ -14,6 +14,7 @@ With this extension, your AI assistant can create a complete site, write and lay
 
 - **Claude Desktop**: download `toweb-mcp-<version>.mcpb` from the [releases](../../releases) and open it (double-click), then **Install**.
 - **Other MCP clients** (Claude Code, Cursor, ChatGPT, Gemini, Mistral Vibe…): TOWeb adds itself from **Settings › AI**, or copy the configuration it shows there.
+- **Cline, or any client that installs servers from a repository**: follow [llms-install.md](llms-install.md) (clone this repository, then point the client to `node server/index.js`, no dependencies).
 
 If TOWeb is installed in a non-standard folder, set **TOWeb location** in the extension's settings.
 
