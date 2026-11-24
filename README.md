@@ -4,6 +4,8 @@ Connect Claude (and other MCP clients) to **TOWeb 15**, the desktop website buil
 
 With this extension, your AI assistant can create a complete site, write and lay out pages, add products and posts, translate, check and publish, while you watch every change live in TOWeb and can undo any of them.
 
+> **Version numbers**: this is the version of the launcher, independent of TOWeb's own version. It works with TOWeb 15.0.12 and later, and only changes when the launcher changes.
+
 ## Requirements
 
 - **TOWeb 15** installed on this computer: <https://www.lauyan.com>
