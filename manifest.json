@@ -1,0 +1,70 @@
+{
+  "manifest_version": "0.3",
+  "name": "toweb",
+  "display_name": "TOWeb",
+  "version": "15.0.12",
+  "description": "Build, edit and publish your websites with TOWeb, the desktop website builder, from Claude.",
+  "long_description": "TOWeb is a desktop website builder for Mac and Windows: pages, blog, online shop, bookings, documentation and multilingual sites, published to your own hosting by FTP or SFTP. This extension connects Claude to the TOWeb application installed on your computer. Claude can create a complete site, write and lay out pages, add products and posts, translate, check and publish, while you watch the changes live in TOWeb and can undo any of them.\n\n**Requirements**: TOWeb 15 installed on this computer (https://www.lauyan.com). Full AI piloting is included in the Studio edition; other editions can try it on sites created by the assistant. Your sites stay on your computer.",
+  "author": {
+    "name": "Lauyan Software",
+    "url": "https://www.lauyan.com"
+  },
+  "homepage": "https://www.lauyan.com/en/ai-assistant/",
+  "documentation": "https://www.lauyan.com/en/documentation/",
+  "support": "https://www.lauyan.com/support/",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {
+        "TOWEB_APP_PATH": "${user_config.toweb_app_path}"
+      }
+    }
+  },
+  "user_config": {
+    "toweb_app_path": {
+      "type": "string",
+      "title": "TOWeb location (optional)",
+      "description": "Only if TOWeb 15 is installed in a non-standard folder: the TOWeb V15.app application (Mac) or the TOWeb installation folder (Windows). Leave empty otherwise.",
+      "required": false,
+      "default": ""
+    }
+  },
+  "tools_generated": true,
+  "keywords": [
+    "website",
+    "website builder",
+    "web design",
+    "blog",
+    "ecommerce",
+    "shop",
+    "bookings",
+    "multilingual",
+    "publishing",
+    "ftp",
+    "sftp",
+    "toweb"
+  ],
+  "license": "MIT",
+  "privacy_policies": [
+    "https://weblegal.ai/documents/lauyan-software/lauyan-com/privacy-policy/"
+  ],
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32"
+    ],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lauyan-software/toweb-mcp"
+  }
+}
